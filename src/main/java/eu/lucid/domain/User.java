@@ -1,6 +1,6 @@
 package eu.lucid.domain;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,23 +15,23 @@ public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	private Long userId;
 
 	private String login;
 
 	private String password;
 
-	private LocalDate registeredAt;
+	private Date registeredAt;
 
-	@OneToOne(mappedBy = "staff")
+	@OneToOne(mappedBy = "user")
 	private Staff staff;
 
 	public Long getId() {
-		return id;
+		return userId;
 	}
 
 	public void setId(Long id) {
-		this.id = id;
+		this.userId = id;
 	}
 
 	public String getLogin() {
@@ -50,11 +50,11 @@ public class User {
 		this.password = password;
 	}
 
-	public LocalDate getRegisteredAt() {
+	public Date getRegisteredAt() {
 		return registeredAt;
 	}
 
-	public void setRegisteredAt(LocalDate registeredAt) {
+	public void setRegisteredAt(Date registeredAt) {
 		this.registeredAt = registeredAt;
 	}
 
