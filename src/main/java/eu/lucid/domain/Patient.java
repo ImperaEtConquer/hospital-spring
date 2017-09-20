@@ -68,4 +68,48 @@ public class Patient {
 		this.medicalRecords = medicalRecords;
 	}
 
+	public static class Builder {
+		private Long patientId;
+		private String firstName;
+		private String lastName;
+		private Date birthDate;
+		private List<MedicalRecord> medicalRecords;
+
+		public Builder patientId(Long patientId) {
+			this.patientId = patientId;
+			return this;
+		}
+
+		public Builder firstName(String firstName) {
+			this.firstName = firstName;
+			return this;
+		}
+
+		public Builder lastName(String lastName) {
+			this.lastName = lastName;
+			return this;
+		}
+
+		public Builder birthDate(Date birthDate) {
+			this.birthDate = birthDate;
+			return this;
+		}
+
+		public Builder medicalRecords(List<MedicalRecord> medicalRecords) {
+			this.medicalRecords = medicalRecords;
+			return this;
+		}
+
+		public Patient build() {
+			return new Patient(this);
+		}
+	}
+
+	private Patient(Builder builder) {
+		this.patientId = builder.patientId;
+		this.firstName = builder.firstName;
+		this.lastName = builder.lastName;
+		this.birthDate = builder.birthDate;
+		this.medicalRecords = builder.medicalRecords;
+	}
 }

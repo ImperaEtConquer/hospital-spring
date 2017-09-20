@@ -70,4 +70,48 @@ public class Diagnosis {
 		this.doctor = doctor;
 	}
 
+	public static class Builder {
+		private Long diagnosisId;
+		private String information;
+		private Date registeredAt;
+		private MedicalRecord medicalRecord;
+		private Staff doctor;
+
+		public Builder diagnosisId(Long diagnosisId) {
+			this.diagnosisId = diagnosisId;
+			return this;
+		}
+
+		public Builder information(String information) {
+			this.information = information;
+			return this;
+		}
+
+		public Builder registeredAt(Date registeredAt) {
+			this.registeredAt = registeredAt;
+			return this;
+		}
+
+		public Builder medicalRecord(MedicalRecord medicalRecord) {
+			this.medicalRecord = medicalRecord;
+			return this;
+		}
+
+		public Builder doctor(Staff doctor) {
+			this.doctor = doctor;
+			return this;
+		}
+
+		public Diagnosis build() {
+			return new Diagnosis(this);
+		}
+	}
+
+	private Diagnosis(Builder builder) {
+		this.diagnosisId = builder.diagnosisId;
+		this.information = builder.information;
+		this.registeredAt = builder.registeredAt;
+		this.medicalRecord = builder.medicalRecord;
+		this.doctor = builder.doctor;
+	}
 }

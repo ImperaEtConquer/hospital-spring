@@ -66,4 +66,48 @@ public class User {
 		this.staff = staff;
 	}
 
+	public static class Builder {
+		private Long userId;
+		private String login;
+		private String password;
+		private Date registeredAt;
+		private Staff staff;
+
+		public Builder userId(Long userId) {
+			this.userId = userId;
+			return this;
+		}
+
+		public Builder login(String login) {
+			this.login = login;
+			return this;
+		}
+
+		public Builder password(String password) {
+			this.password = password;
+			return this;
+		}
+
+		public Builder registeredAt(Date registeredAt) {
+			this.registeredAt = registeredAt;
+			return this;
+		}
+
+		public Builder staff(Staff staff) {
+			this.staff = staff;
+			return this;
+		}
+
+		public User build() {
+			return new User(this);
+		}
+	}
+
+	private User(Builder builder) {
+		this.userId = builder.userId;
+		this.login = builder.login;
+		this.password = builder.password;
+		this.registeredAt = builder.registeredAt;
+		this.staff = builder.staff;
+	}
 }

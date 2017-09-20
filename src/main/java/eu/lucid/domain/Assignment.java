@@ -105,4 +105,69 @@ public class Assignment {
 		this.performer = performer;
 	}
 
+	public static class Builder {
+		private Long assignmentId;
+		private AssignmentType assignmentType;
+		private String information;
+		private Date assignedAt;
+		private Date finishedAt;
+		private MedicalRecord medicalRecord;
+		private Staff doctor;
+		private Staff performer;
+
+		public Builder assignmentId(Long assignmentId) {
+			this.assignmentId = assignmentId;
+			return this;
+		}
+
+		public Builder assignmentType(AssignmentType assignmentType) {
+			this.assignmentType = assignmentType;
+			return this;
+		}
+
+		public Builder information(String information) {
+			this.information = information;
+			return this;
+		}
+
+		public Builder assignedAt(Date assignedAt) {
+			this.assignedAt = assignedAt;
+			return this;
+		}
+
+		public Builder finishedAt(Date finishedAt) {
+			this.finishedAt = finishedAt;
+			return this;
+		}
+
+		public Builder medicalRecord(MedicalRecord medicalRecord) {
+			this.medicalRecord = medicalRecord;
+			return this;
+		}
+
+		public Builder doctor(Staff doctor) {
+			this.doctor = doctor;
+			return this;
+		}
+
+		public Builder performer(Staff performer) {
+			this.performer = performer;
+			return this;
+		}
+
+		public Assignment build() {
+			return new Assignment(this);
+		}
+	}
+
+	private Assignment(Builder builder) {
+		this.assignmentId = builder.assignmentId;
+		this.assignmentType = builder.assignmentType;
+		this.information = builder.information;
+		this.assignedAt = builder.assignedAt;
+		this.finishedAt = builder.finishedAt;
+		this.medicalRecord = builder.medicalRecord;
+		this.doctor = builder.doctor;
+		this.performer = builder.performer;
+	}
 }

@@ -85,4 +85,55 @@ public class MedicalRecord {
 		this.assignments = assignments;
 	}
 
+	public static class Builder {
+		private Long medicalRecordId;
+		private Date registeredAt;
+		private Date finishedAt;
+		private Patient patient;
+		private List<Diagnosis> diagnoses;
+		private List<Assignment> assignments;
+
+		public Builder medicalRecordId(Long medicalRecordId) {
+			this.medicalRecordId = medicalRecordId;
+			return this;
+		}
+
+		public Builder registeredAt(Date registeredAt) {
+			this.registeredAt = registeredAt;
+			return this;
+		}
+
+		public Builder finishedAt(Date finishedAt) {
+			this.finishedAt = finishedAt;
+			return this;
+		}
+
+		public Builder patient(Patient patient) {
+			this.patient = patient;
+			return this;
+		}
+
+		public Builder diagnoses(List<Diagnosis> diagnoses) {
+			this.diagnoses = diagnoses;
+			return this;
+		}
+
+		public Builder assignments(List<Assignment> assignments) {
+			this.assignments = assignments;
+			return this;
+		}
+
+		public MedicalRecord build() {
+			return new MedicalRecord(this);
+		}
+	}
+
+	private MedicalRecord(Builder builder) {
+		this.medicalRecordId = builder.medicalRecordId;
+		this.registeredAt = builder.registeredAt;
+		this.finishedAt = builder.finishedAt;
+		this.patient = builder.patient;
+		this.diagnoses = builder.diagnoses;
+		this.assignments = builder.assignments;
+	}
 }

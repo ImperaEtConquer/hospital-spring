@@ -117,4 +117,76 @@ public class Staff {
 		this.performedAssignments = performedAssignments;
 	}
 
+	public static class Builder {
+		private Long staffId;
+		private String firstName;
+		private String lastName;
+		private Date birthDate;
+		private Speciality speciality;
+		private User user;
+		private List<Assignment> assignedAssignments;
+		private List<Diagnosis> assignedDiagnosis;
+		private List<Assignment> performedAssignments;
+
+		public Builder staffId(Long staffId) {
+			this.staffId = staffId;
+			return this;
+		}
+
+		public Builder firstName(String firstName) {
+			this.firstName = firstName;
+			return this;
+		}
+
+		public Builder lastName(String lastName) {
+			this.lastName = lastName;
+			return this;
+		}
+
+		public Builder birthDate(Date birthDate) {
+			this.birthDate = birthDate;
+			return this;
+		}
+
+		public Builder speciality(Speciality speciality) {
+			this.speciality = speciality;
+			return this;
+		}
+
+		public Builder user(User user) {
+			this.user = user;
+			return this;
+		}
+
+		public Builder assignedAssignments(List<Assignment> assignedAssignments) {
+			this.assignedAssignments = assignedAssignments;
+			return this;
+		}
+
+		public Builder assignedDiagnosis(List<Diagnosis> assignedDiagnosis) {
+			this.assignedDiagnosis = assignedDiagnosis;
+			return this;
+		}
+
+		public Builder performedAssignments(List<Assignment> performedAssignments) {
+			this.performedAssignments = performedAssignments;
+			return this;
+		}
+
+		public Staff build() {
+			return new Staff(this);
+		}
+	}
+
+	private Staff(Builder builder) {
+		this.staffId = builder.staffId;
+		this.firstName = builder.firstName;
+		this.lastName = builder.lastName;
+		this.birthDate = builder.birthDate;
+		this.speciality = builder.speciality;
+		this.user = builder.user;
+		this.assignedAssignments = builder.assignedAssignments;
+		this.assignedDiagnosis = builder.assignedDiagnosis;
+		this.performedAssignments = builder.performedAssignments;
+	}
 }
