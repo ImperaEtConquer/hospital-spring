@@ -1,44 +1,44 @@
 package eu.lucid.controllers;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import eu.lucid.dto.CredentialsDTO;
+import eu.lucid.domain.User;
 import eu.lucid.services.LoginService;
 
 @Controller
 public class LoginController {
-	
+
 	@Autowired
 	private LoginService loginService;
-	
+
+	@Autowired
+	private HttpSession httpSession;
+
 	@RequestMapping(value = { "/" }, method = RequestMethod.GET)
 	public ModelAndView getHome() {
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("index");
-		return modelAndView;
+		return new ModelAndView("index");
 	}
 
 	@RequestMapping(value = { "/login" }, method = RequestMethod.GET)
 	public ModelAndView getLoginPage() {
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("login");
-		return modelAndView;
+		return new ModelAndView("login", "user", new User());
 	}
 
 	@RequestMapping(value = { "/login" }, method = RequestMethod.POST)
-	public ModelAndView login(@RequestBody CredentialsDTO credentialsDTO) {
+	public ModelAndView login(User user) {
 		ModelAndView modelAndView = new ModelAndView();
-		String login = credentialsDTO.getLogin();
-		String password = credentialsDTO.getPassword();
-		if (loginService.isLoginSuccessful(login, password)) {
+		if (loginService.isLoginSuccessful(user)) {
+			httpSession.setAttribute("user", user);
 			modelAndView.setViewName("index");
-		}
-		else {
+		} else {
+			modelAndView.addObject("user", new User());
+			modelAndView.addObject("error", "error");
 			modelAndView.setViewName("login");
 		}
 		return modelAndView;
@@ -46,14 +46,12 @@ public class LoginController {
 
 	@RequestMapping(value = { "/register" }, method = RequestMethod.GET)
 	public ModelAndView getRegisterPage() {
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("register");
-		return modelAndView;
+		return new ModelAndView("registration", "user", new User());
 	}
 
 	@RequestMapping(value = { "/register" }, method = RequestMethod.POST)
-	public ModelAndView register() {
-		ModelAndView modelAndView = new ModelAndView();
-		return modelAndView;
+	public ModelAndView register(User user) {
+		loginService.registerUser(user);
+		return new ModelAndView("index");
 	}
 }

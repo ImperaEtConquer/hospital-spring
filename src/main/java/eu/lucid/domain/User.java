@@ -26,6 +26,10 @@ public class User {
 	@OneToOne(mappedBy = "user")
 	private Staff staff;
 
+	public User() {
+
+	}
+
 	public Long getId() {
 		return userId;
 	}
