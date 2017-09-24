@@ -18,49 +18,34 @@
 <link href="http://getbootstrap.com/docs/4.0/examples/signin/signin.css"
 	rel="stylesheet" />
 
-<link rel="stylesheet" type="text/css" media="all" th:href="@{/static/custom.css}" />
 </head>
 
 <body>
 
 	<div class="container">
 
-		<form class="form-signin" th:action="@{/register}" th:object="${user}"
-			method="post">
+		<form class="form-signin" th:action="@{/register}" th:object="${user}" method="post">
 			<h2 class="form-signin-heading">Please sign up</h2>
-			<label for="inputEmail" class="sr-only">Email address</label> <input
-				type="email" th:field="*{login}" id="inputEmail"
-				class="form-control" placeholder="Email address" required=""
-				autofocus="" /> <label for="inputPassword" class="sr-only">Password</label>
-			<input type="password" th:field="*{password}" id="inputPassword"
-				class="form-control" placeholder="Password" required="" />
 
-			<div class="btn-group" data-toggle="buttons">
+			<label for="inputEmail" class="sr-only">Email address</label> 
+			<input type="email" th:field="*{login}" class="form-control" placeholder="Email address" required="" autofocus="" /> 
+			<label for="inputPassword" class="sr-only">Password</label>
+			<input type="password" th:field="*{password}" class="form-control" placeholder="Password" required="" /> 
+			<label for="inputName" class="sr-only">First name</label>
+			<input type="text" th:field="*{firstName}" class="form-control" placeholder="First name" required="" autofocus="" />
+			<label for="inputSurname" class="sr-only">Last name</label>
+			<input type="text" th:field="*{lastName}" class="form-control" placeholder="Last name" required="" autofocus="" />
+			<label for="inputDate" class="sr-only">Birth date</label>
+			<input type="date" th:field="*{birthDate}" class="form-control" placeholder="Birth date" required="" autofocus="" />
 
-				<label class="btn btn-success active"> <input type="radio"
-					name="options" id="option2" autocomplete="off" chacked> <span
-					class="glyphicon glyphicon-ok"></span>
-				</label> <label class="btn btn-primary"> <input type="radio"
-					name="options" id="option1" autocomplete="off"> <span
-					class="glyphicon glyphicon-ok"></span>
-				</label> <label class="btn btn-info"> <input type="radio"
-					name="options" id="option2" autocomplete="off"> <span
-					class="glyphicon glyphicon-ok"></span>
-				</label> <label class="btn btn-default"> <input type="radio"
-					name="options" id="option2" autocomplete="off"> <span
-					class="glyphicon glyphicon-ok"></span>
-				</label> <label class="btn btn-warning"> <input type="radio"
-					name="options" id="option2" autocomplete="off"> <span
-					class="glyphicon glyphicon-ok"></span>
-				</label> <label class="btn btn-danger"> <input type="radio"
-					name="options" id="option2" autocomplete="off"> <span
-					class="glyphicon glyphicon-ok"></span>
-				</label>
-
+			<div>
+				<input type="radio" class="radio" name="group1" th:field="*{speciality}" th:value="DOCTOR" /> 
+				<label for="radio">Doctor</label>
+				<input type="radio" class="radio" name="group1" th:field="*{speciality}" th:value="NURSE" />
+				<label for="radio">Nurse</label>
 			</div>
 
-			<button class="btn btn-lg btn-primary btn-block" type="submit">Sign
-				up</button>
+			<button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
 		</form>
 
 	</div>
@@ -70,8 +55,12 @@
 	<!-- Bootstrap core JavaScript
     ================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
-	<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
 	<script
 		src="https://getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"></script>
+
+
+
 </body>
 </html>

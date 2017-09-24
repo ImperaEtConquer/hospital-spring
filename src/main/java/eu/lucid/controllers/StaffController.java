@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import eu.lucid.dto.PatientDTO;
-import eu.lucid.dto.StaffDTO;
+import eu.lucid.dto.UserDTO;
 import eu.lucid.services.PatientService;
 import eu.lucid.services.StaffService;
 
@@ -25,7 +25,7 @@ public class StaffController {
 	}
 
 	@RequestMapping(value = { "/staff/{id}" }, method = RequestMethod.POST)
-	public ModelAndView addStaff(@PathVariable Long id, @ModelAttribute StaffDTO staffDTO) {
+	public ModelAndView addStaff(@PathVariable Long id, @ModelAttribute UserDTO userDTO) {
 		return null;
 	}
 
@@ -35,7 +35,7 @@ public class StaffController {
 	}
 
 	@RequestMapping(value = { "/staff/{id}" }, method = RequestMethod.PUT)
-	public ModelAndView updateStaff(@PathVariable Long id, @ModelAttribute StaffDTO staffDTO) {
+	public ModelAndView updateStaff(@PathVariable Long id, @ModelAttribute UserDTO userDTO) {
 		return null;
 	}
 }

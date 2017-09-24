@@ -1,6 +1,7 @@
 package eu.lucid.dto;
 
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 import eu.lucid.domain.Speciality;
 
@@ -9,8 +10,8 @@ public class UserDTO {
 	private String password;
 	private String firstName;
 	private String lastName;
-	private Date birthDate;
-	private Speciality speciality;
+	private String birthDate;
+	private String speciality;
 
 	public UserDTO() {
 	}
@@ -47,20 +48,38 @@ public class UserDTO {
 		this.lastName = lastName;
 	}
 
-	public Date getBirthDate() {
+	public String getBirthDate() {
 		return birthDate;
 	}
 
-	public void setBirthDate(Date birthDate) {
+	public Date getBirthDateAsDate() {
+		String[] data = birthDate.split("-");
+		int year = Integer.valueOf(data[0]);
+		int month = Integer.valueOf(data[1]);
+		int day = Integer.valueOf(data[2]);
+		return new GregorianCalendar(year, month-1, day).getTime();
+	}
+
+	public void setBirthDate(String birthDate) {
 		this.birthDate = birthDate;
 	}
 
-	public Speciality getSpeciality() {
+	public String getSpeciality() {
 		return speciality;
 	}
 
-	public void setSpeciality(Speciality speciality) {
+	public Speciality getSpecialityAsEnum() {
+		return speciality.equals("DOCTOR") ? Speciality.DOCTOR : Speciality.NURSE;
+	}
+
+	public void setSpeciality(String speciality) {
 		this.speciality = speciality;
+	}
+
+	@Override
+	public String toString() {
+		return "UserDTO [login=" + login + ", password=" + password + ", firstName=" + firstName + ", lastName="
+				+ lastName + ", birthDate=" + birthDate + ", speciality=" + speciality + "]";
 	}
 
 }

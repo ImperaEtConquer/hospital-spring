@@ -28,16 +28,12 @@ public class LoginController {
 
 	@RequestMapping(value = { "/login" }, method = RequestMethod.POST)
 	public ModelAndView login(UserDTO user) {
-		ModelAndView modelAndView = new ModelAndView();
 		if (loginService.isLoginSuccessful(user)) {
 			httpSession.setAttribute("user", user);
-			modelAndView.setViewName("index");
+			return new ModelAndView("index");
 		} else {
-			modelAndView.addObject("user", new UserDTO());
-			modelAndView.addObject("error", "error");
-			modelAndView.setViewName("login");
+			return new ModelAndView("index", "user", new UserDTO());
 		}
-		return modelAndView;
 	}
 
 	@RequestMapping(value = { "/register" }, method = RequestMethod.GET)
@@ -47,8 +43,12 @@ public class LoginController {
 
 	@RequestMapping(value = { "/register" }, method = RequestMethod.POST)
 	public ModelAndView register(UserDTO user) {
-		loginService.registerUser(user);
-		httpSession.setAttribute("user", user);
-		return new ModelAndView("index");
+		if (loginService.registerUser(user)) {
+			httpSession.setAttribute("user", user);
+			return new ModelAndView("index");
+		} else {
+			return new ModelAndView("registration", "user", new UserDTO());
+		}
+
 	}
 }
