@@ -45,6 +45,9 @@ public class Staff {
 	@OneToMany(mappedBy = "performer", cascade = CascadeType.ALL)
 	private List<Assignment> performedAssignments;
 
+	public Staff() {
+	}
+
 	public Long getId() {
 		return staffId;
 	}

@@ -27,6 +27,9 @@ public class Patient {
 
 	@OneToMany(mappedBy = "patient", cascade = CascadeType.ALL)
 	private List<MedicalRecord> medicalRecords;
+	
+	public Patient() {
+	}
 
 	public Long getId() {
 		return patientId;

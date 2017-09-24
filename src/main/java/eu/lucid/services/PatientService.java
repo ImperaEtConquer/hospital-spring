@@ -3,11 +3,11 @@ package eu.lucid.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import eu.lucid.repositories.MedicalRecordRepository;
+import eu.lucid.repositories.PatientRepository;
 
 @Service
-public class MedicalRecordService {
+public class PatientService {
 
 	@Autowired
-	private MedicalRecordRepository medicalRecordRepository;
+	private PatientRepository patientRepository;
 }

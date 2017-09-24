@@ -29,6 +29,9 @@ public class Diagnosis {
 	@ManyToOne
 	@PrimaryKeyJoinColumn
 	private Staff doctor;
+	
+	public Diagnosis() {
+	}
 
 	public Long getId() {
 		return diagnosisId;

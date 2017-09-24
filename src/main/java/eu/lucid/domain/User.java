@@ -27,7 +27,6 @@ public class User {
 	private Staff staff;
 
 	public User() {
-
 	}
 
 	public Long getId() {
