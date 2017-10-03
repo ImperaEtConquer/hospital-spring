@@ -8,9 +8,11 @@ import org.springframework.stereotype.Service;
 
 import eu.lucid.domain.Staff;
 import eu.lucid.domain.User;
-import eu.lucid.dto.UserDTO;
 import eu.lucid.repositories.StaffRepository;
 import eu.lucid.repositories.UserRepository;
+import eu.lucid.rest.UserDTO;
+import eu.lucid.utils.DateUtils;
+import eu.lucid.utils.EncryptUtils;
 
 @Service
 public class LoginService {
@@ -21,35 +23,39 @@ public class LoginService {
 	@Autowired
 	private StaffRepository staffRepository;
 
-	public boolean isLoginSuccessful(UserDTO credentials) {
-		User user = userRepository.findByLogin(credentials.getLogin());
+	public boolean isLoginSuccessful(UserDTO userDTO) {
+		User user = userRepository.findByLogin(userDTO.getLogin());
 		if (user == null) {
 			return false;
 		}
-		if (!user.getPassword().equals(credentials.getPassword())) {
+		if (!user.getPassword().equals(EncryptUtils.encryptPassword(userDTO.getPassword()))) {
 			return false;
 		}
 		return true;
 	}
 
-	public boolean registerUser(UserDTO credentials) {
+	public boolean registerUser(UserDTO userDTO) {
 		User user = new User.Builder()
-				.login(credentials.getLogin())
-				.password(credentials.getPassword())
+				.login(userDTO.getLogin())
+				.password(EncryptUtils.encryptPassword(userDTO.getPassword()))
 				.registeredAt(Date.from(Instant.now()))
 				.build();
 		Staff staff = new Staff.Builder()
-				.firstName(credentials.getFirstName())
-				.lastName(credentials.getLastName())
-				.birthDate(credentials.getBirthDateAsDate())
-				.speciality(credentials.getSpecialityAsEnum())
-				.user(user)
-				.build();
+				.firstName(userDTO.getFirstName())
+				.lastName(userDTO.getLastName())
+				.birthDate(DateUtils.StringToDate(userDTO.getBirthDate()))
+				.speciality(userDTO.getSpecialityAsEnum())
+				.user(user).build();
 		if (!isExists(user)) {
 			staffRepository.save(staff);
 			return true;
 		}
 		return false;
+	}
+	
+	public UserDTO getUser(UserDTO userDTO) {
+		User user = userRepository.findByLogin(userDTO.getLogin());
+		return new UserDTO(user);
 	}
 
 	private boolean isExists(User user) {

@@ -1,19 +1,51 @@
-package eu.lucid.dto;
+package eu.lucid.rest;
 
-import java.util.Date;
-import java.util.GregorianCalendar;
-
+import javax.validation.constraints.NotNull;
 import eu.lucid.domain.Speciality;
+import eu.lucid.domain.User;
+import eu.lucid.utils.DateUtils;
 
 public class UserDTO {
+
+	private Long id;
+
+	@NotNull
 	private String login;
+
+	@NotNull
 	private String password;
+
+	@NotNull
 	private String firstName;
+
+	@NotNull
 	private String lastName;
+
+	@NotNull
 	private String birthDate;
+
+	@NotNull
 	private String speciality;
 
+	public UserDTO(User user) {
+		this.id = user.getId();
+		this.login = user.getLogin();
+		this.password = user.getPassword();
+		this.firstName = user.getStaff().getFirstName();
+		this.lastName = user.getStaff().getLastName();
+		this.birthDate = DateUtils.DateToString(user.getStaff().getBirthDate());
+		this.speciality = user.getStaff().getSpeciality().toString();
+	}
+
 	public UserDTO() {
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getLogin() {
@@ -50,14 +82,6 @@ public class UserDTO {
 
 	public String getBirthDate() {
 		return birthDate;
-	}
-
-	public Date getBirthDateAsDate() {
-		String[] data = birthDate.split("-");
-		int year = Integer.valueOf(data[0]);
-		int month = Integer.valueOf(data[1]);
-		int day = Integer.valueOf(data[2]);
-		return new GregorianCalendar(year, month-1, day).getTime();
 	}
 
 	public void setBirthDate(String birthDate) {

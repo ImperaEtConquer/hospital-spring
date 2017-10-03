@@ -1,4 +1,4 @@
-package eu.lucid.dto;
+package eu.lucid.rest;
 
 public class MedicalRecordDTO {
 
