@@ -23,18 +23,18 @@ public class LoginService {
 	@Autowired
 	private StaffRepository staffRepository;
 
-	public boolean isLoginSuccessful(UserDTO userDTO) {
+	public String login(UserDTO userDTO) {
 		User user = userRepository.findByLogin(userDTO.getLogin());
 		if (user == null) {
-			return false;
+			return "No such user registered.";
 		}
 		if (!user.getPassword().equals(EncryptUtils.encryptPassword(userDTO.getPassword()))) {
-			return false;
+			return "Wrong password.";
 		}
-		return true;
+		return "Login successful.";
 	}
 
-	public boolean registerUser(UserDTO userDTO) {
+	public String register(UserDTO userDTO) {
 		User user = new User.Builder()
 				.login(userDTO.getLogin())
 				.password(EncryptUtils.encryptPassword(userDTO.getPassword()))
@@ -45,14 +45,15 @@ public class LoginService {
 				.lastName(userDTO.getLastName())
 				.birthDate(DateUtils.StringToDate(userDTO.getBirthDate()))
 				.speciality(userDTO.getSpecialityAsEnum())
-				.user(user).build();
+				.user(user)
+				.build();
 		if (!isExists(user)) {
 			staffRepository.save(staff);
-			return true;
+			return "Registration sucessful.";
 		}
-		return false;
+		return "This user is already registered";
 	}
-	
+
 	public UserDTO getUser(UserDTO userDTO) {
 		User user = userRepository.findByLogin(userDTO.getLogin());
 		return new UserDTO(user);
