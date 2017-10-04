@@ -30,12 +30,8 @@ public class GeneralResponseDTO<T> {
 		this.data = data;
 	}
 
-	public GeneralResponseDTO<T> buildEmptyWithMessage(String message) {
-		return new Builder<T>().status(Status.OK).message(message).build();
-	}
-
-	public GeneralResponseDTO<T> buildEmptyWithError(String error) {
-		return new Builder<T>().status(Status.ERROR).message(error).build();
+	public GeneralResponseDTO<T> buildEmptyWithMessage(Status status, String message) {
+		return new Builder<T>().status(status).message(message).build();
 	}
 
 	public GeneralResponseDTO<T> buildWithData(T data) {

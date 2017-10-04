@@ -3,9 +3,12 @@ package eu.lucid.services;
 import java.time.Instant;
 import java.util.Date;
 
+import javax.security.auth.login.LoginException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import eu.lucid.config.Message;
 import eu.lucid.domain.Staff;
 import eu.lucid.domain.User;
 import eu.lucid.repositories.StaffRepository;
@@ -23,30 +26,26 @@ public class LoginService {
 	@Autowired
 	private StaffRepository staffRepository;
 
-	public String login(UserDTO userDTO) {
+	@Autowired
+	private Message message;
+
+	public void login(UserDTO userDTO) throws LoginException {
 		User user = userRepository.findByLogin(userDTO.getLogin());
 		if (user == null) {
-			return "No such user registered.";
+			throw new LoginException(message.loginNull);
 		}
 		if (!user.getPassword().equals(EncryptUtils.encryptPassword(userDTO.getPassword()))) {
-			return "Wrong password.";
+			throw new LoginException(message.loginFail);
 		}
-		return "Login successful.";
 	}
 
 	public String register(UserDTO userDTO) {
-		User user = new User.Builder()
-				.login(userDTO.getLogin())
-				.password(EncryptUtils.encryptPassword(userDTO.getPassword()))
-				.registeredAt(Date.from(Instant.now()))
+		User user = new User.Builder().login(userDTO.getLogin())
+				.password(EncryptUtils.encryptPassword(userDTO.getPassword())).registeredAt(Date.from(Instant.now()))
 				.build();
-		Staff staff = new Staff.Builder()
-				.firstName(userDTO.getFirstName())
-				.lastName(userDTO.getLastName())
-				.birthDate(DateUtils.StringToDate(userDTO.getBirthDate()))
-				.speciality(userDTO.getSpecialityAsEnum())
-				.user(user)
-				.build();
+		Staff staff = new Staff.Builder().firstName(userDTO.getFirstName()).lastName(userDTO.getLastName())
+				.birthDate(DateUtils.StringToDate(userDTO.getBirthDate())).speciality(userDTO.getSpecialityAsEnum())
+				.user(user).build();
 		if (!isExists(user)) {
 			staffRepository.save(staff);
 			return "Registration sucessful.";
