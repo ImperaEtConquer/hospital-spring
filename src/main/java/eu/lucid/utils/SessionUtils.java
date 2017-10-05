@@ -3,9 +3,9 @@ package eu.lucid.utils;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 public class SessionUtils {
 
 	@Autowired

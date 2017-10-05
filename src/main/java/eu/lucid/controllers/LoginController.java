@@ -1,5 +1,7 @@
 package eu.lucid.controllers;
 
+import java.util.stream.Collectors;
+
 import javax.security.auth.login.LoginException;
 import javax.validation.Valid;
 
@@ -12,9 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 import eu.lucid.config.Message;
 import eu.lucid.rest.request.LoginDTO;
 import eu.lucid.rest.response.GeneralResponseDTO;
+import eu.lucid.rest.response.StaffDTO;
 import eu.lucid.rest.response.Status;
 import eu.lucid.services.LoginService;
+import eu.lucid.utils.BindingUtils;
 import eu.lucid.utils.SessionUtils;
+import groovy.lang.Binding;
 
 @RestController
 public class LoginController {
@@ -29,7 +34,10 @@ public class LoginController {
 	private Message message;
 
 	@RequestMapping(value = { "/login" }, method = RequestMethod.POST)
-	public GeneralResponseDTO<?> login(@Valid LoginDTO userDTO) {
+	public GeneralResponseDTO<?> login(@Valid LoginDTO userDTO, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return BindingUtils.getErrorResponse(bindingResult);
+		}
 		if (sessionUtils.isUserLoggedIn()) {
 			return new GeneralResponseDTO<>().buildEmptyWithMessage(Status.ERROR, message.loginAlready);
 		}
@@ -45,13 +53,14 @@ public class LoginController {
 	@RequestMapping(value = { "/logout" }, method = RequestMethod.GET)
 	public GeneralResponseDTO<?> logout() {
 		if (!sessionUtils.isUserLoggedIn()) {
-			new GeneralResponseDTO<>().buildEmptyWithMessage(Status.ERROR, "something wrong");
+			new GeneralResponseDTO<>().buildEmptyWithMessage(Status.ERROR, message.loginFail);
 		}
-		return new GeneralResponseDTO<>().buildEmptyWithMessage(Status.OK, "something wrong");
+		return new GeneralResponseDTO<>().buildEmptyWithMessage(Status.OK, message.loginSuccess);
 	}
 
 	@RequestMapping(value = { "/register" }, method = RequestMethod.POST)
-	public GeneralResponseDTO<?> register(@Valid LoginDTO user, BindingResult bindingResult) {
+	public GeneralResponseDTO<?> register(@Valid StaffDTO staffDTO) {
+		loginService.register(staffDTO);
 		return null;
 	}
 

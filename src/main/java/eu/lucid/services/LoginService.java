@@ -13,7 +13,9 @@ import eu.lucid.domain.Staff;
 import eu.lucid.domain.User;
 import eu.lucid.repositories.StaffRepository;
 import eu.lucid.repositories.UserRepository;
+import eu.lucid.rest.PatientDTO;
 import eu.lucid.rest.request.LoginDTO;
+import eu.lucid.rest.response.StaffDTO;
 import eu.lucid.utils.DateUtils;
 import eu.lucid.utils.EncryptUtils;
 
@@ -39,7 +41,7 @@ public class LoginService {
 		}
 	}
 
-	public String register(LoginDTO userDTO) {
+	public String register(StaffDTO staffDTO) {
 		return null;
 	}
 
