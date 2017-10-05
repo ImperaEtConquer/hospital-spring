@@ -1,7 +1,9 @@
 package eu.lucid.config;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
+@Service
 public class Message {
 
 	@Value("${messages.login.successful}")
@@ -15,5 +17,4 @@ public class Message {
 
 	@Value("${messages.login.already}")
 	public String loginAlready;
-
 }

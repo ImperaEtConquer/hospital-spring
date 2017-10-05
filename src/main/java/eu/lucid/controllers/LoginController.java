@@ -1,21 +1,20 @@
 package eu.lucid.controllers;
 
 import javax.security.auth.login.LoginException;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import eu.lucid.config.Message;
-import eu.lucid.rest.UserDTO;
+import eu.lucid.rest.request.LoginDTO;
 import eu.lucid.rest.response.GeneralResponseDTO;
 import eu.lucid.rest.response.Status;
 import eu.lucid.services.LoginService;
+import eu.lucid.utils.SessionUtils;
 
 @RestController
 public class LoginController {
@@ -24,34 +23,35 @@ public class LoginController {
 	private LoginService loginService;
 
 	@Autowired
-	private HttpSession httpSession;
+	private SessionUtils sessionUtils;
 
 	@Autowired
 	private Message message;
 
 	@RequestMapping(value = { "/login" }, method = RequestMethod.POST)
-	public GeneralResponseDTO<?> login(UserDTO userDTO) {
-		if(httpSession.getAttribute("user") != null) {
-			
+	public GeneralResponseDTO<?> login(@Valid LoginDTO userDTO) {
+		if (sessionUtils.isUserLoggedIn()) {
+			return new GeneralResponseDTO<>().buildEmptyWithMessage(Status.ERROR, message.loginAlready);
 		}
 		try {
 			loginService.login(userDTO);
+			sessionUtils.getSession().setAttribute("user", userDTO);
+			return new GeneralResponseDTO<>().buildEmptyWithMessage(Status.OK, message.loginSuccess);
 		} catch (LoginException e) {
-			new GeneralResponseDTO<>().buildEmptyWithMessage(Status.ERROR, e.getMessage());
+			return new GeneralResponseDTO<>().buildEmptyWithMessage(Status.ERROR, e.getMessage());
 		}
-		return new GeneralResponseDTO<>().buildEmptyWithMessage(Status.OK, message.loginSuccess);
 	}
 
 	@RequestMapping(value = { "/logout" }, method = RequestMethod.GET)
 	public GeneralResponseDTO<?> logout() {
-		if (httpSession.getAttribute("user") != null) {
+		if (!sessionUtils.isUserLoggedIn()) {
 			new GeneralResponseDTO<>().buildEmptyWithMessage(Status.ERROR, "something wrong");
 		}
 		return new GeneralResponseDTO<>().buildEmptyWithMessage(Status.OK, "something wrong");
 	}
 
 	@RequestMapping(value = { "/register" }, method = RequestMethod.POST)
-	public GeneralResponseDTO<?> register(@Valid UserDTO user, BindingResult bindingResult) {
+	public GeneralResponseDTO<?> register(@Valid LoginDTO user, BindingResult bindingResult) {
 		return null;
 	}
 

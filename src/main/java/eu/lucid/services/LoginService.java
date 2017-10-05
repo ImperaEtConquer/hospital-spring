@@ -13,7 +13,7 @@ import eu.lucid.domain.Staff;
 import eu.lucid.domain.User;
 import eu.lucid.repositories.StaffRepository;
 import eu.lucid.repositories.UserRepository;
-import eu.lucid.rest.UserDTO;
+import eu.lucid.rest.request.LoginDTO;
 import eu.lucid.utils.DateUtils;
 import eu.lucid.utils.EncryptUtils;
 
@@ -29,33 +29,18 @@ public class LoginService {
 	@Autowired
 	private Message message;
 
-	public void login(UserDTO userDTO) throws LoginException {
-		User user = userRepository.findByLogin(userDTO.getLogin());
+	public void login(LoginDTO loginDTO) throws LoginException {
+		User user = userRepository.findByLogin(loginDTO.getLogin());
 		if (user == null) {
 			throw new LoginException(message.loginNull);
 		}
-		if (!user.getPassword().equals(EncryptUtils.encryptPassword(userDTO.getPassword()))) {
+		if (!user.getPassword().equals(EncryptUtils.encryptPassword(loginDTO.getPassword()))) {
 			throw new LoginException(message.loginFail);
 		}
 	}
 
-	public String register(UserDTO userDTO) {
-		User user = new User.Builder().login(userDTO.getLogin())
-				.password(EncryptUtils.encryptPassword(userDTO.getPassword())).registeredAt(Date.from(Instant.now()))
-				.build();
-		Staff staff = new Staff.Builder().firstName(userDTO.getFirstName()).lastName(userDTO.getLastName())
-				.birthDate(DateUtils.StringToDate(userDTO.getBirthDate())).speciality(userDTO.getSpecialityAsEnum())
-				.user(user).build();
-		if (!isExists(user)) {
-			staffRepository.save(staff);
-			return "Registration sucessful.";
-		}
-		return "This user is already registered";
-	}
-
-	public UserDTO getUser(UserDTO userDTO) {
-		User user = userRepository.findByLogin(userDTO.getLogin());
-		return new UserDTO(user);
+	public String register(LoginDTO userDTO) {
+		return null;
 	}
 
 	private boolean isExists(User user) {
