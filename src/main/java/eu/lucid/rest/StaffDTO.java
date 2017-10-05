@@ -1,8 +1,11 @@
-package eu.lucid.rest.response;
+package eu.lucid.rest;
 
 import javax.validation.constraints.NotNull;
 
+import eu.lucid.domain.Speciality;
+import eu.lucid.domain.Staff;
 import eu.lucid.rest.request.LoginDTO;
+import eu.lucid.utils.DateUtils;
 
 public class StaffDTO {
 
@@ -22,6 +25,20 @@ public class StaffDTO {
 
 	@NotNull
 	private LoginDTO loginDTO;
+
+	public StaffDTO() {
+
+	}
+
+	public StaffDTO(Staff staff) {
+		this.staffId = staff.getId();
+		this.firstName = staff.getFirstName();
+		this.lastName = staff.getLastName();
+		this.birthDate = DateUtils.DateToString(staff.getBirthDate());
+		this.speciality = staff.getSpeciality().toString();
+		this.loginDTO.setLogin(staff.getUser().getLogin());
+		this.loginDTO.setPassword(staff.getUser().getPassword());
+	}
 
 	public Long getStaffId() {
 		return staffId;
@@ -59,8 +76,20 @@ public class StaffDTO {
 		return speciality;
 	}
 
+	public Speciality specialityAsEnum() {
+		return speciality.toUpperCase().equals("DOCTOR") ? Speciality.DOCTOR : Speciality.NURSE;
+	}
+
 	public void setSpeciality(String speciality) {
 		this.speciality = speciality;
+	}
+
+	public LoginDTO getLoginDTO() {
+		return loginDTO;
+	}
+
+	public void setLoginDTO(LoginDTO loginDTO) {
+		this.loginDTO = loginDTO;
 	}
 
 }

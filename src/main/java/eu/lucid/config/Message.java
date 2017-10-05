@@ -18,10 +18,25 @@ public class Message {
 	@Value("${messages.login.already}")
 	public String loginAlready;
 
-	@Value("${messages.logout.success}")
+	@Value("${messages.logout.fail}")
+	public String notLogged;
+
+	@Value("${messages.logout.successful}")
 	public String logoutSuccess;
 
 	@Value("${messages.logout.fail}")
 	public String logoutFail;
+
+	@Value("${messages.register.fail}")
+	public String registerFail;
+
+	@Value("${messages.register.successful}")
+	public String registerSuccess;
+
+	@Value("%{message.user.update.successful}")
+	public String userUpdateSuccess;
+
+	@Value("%{message.user.delete.successful}")
+	public String userDeleteSuccess;
 
 }

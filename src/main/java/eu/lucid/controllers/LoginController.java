@@ -1,8 +1,7 @@
 package eu.lucid.controllers;
 
-import java.util.stream.Collectors;
-
 import javax.security.auth.login.LoginException;
+import javax.security.auth.message.AuthException;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,14 +11,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import eu.lucid.config.Message;
+import eu.lucid.rest.StaffDTO;
 import eu.lucid.rest.request.LoginDTO;
 import eu.lucid.rest.response.GeneralResponseDTO;
-import eu.lucid.rest.response.StaffDTO;
 import eu.lucid.rest.response.Status;
 import eu.lucid.services.LoginService;
 import eu.lucid.utils.BindingUtils;
 import eu.lucid.utils.SessionUtils;
-import groovy.lang.Binding;
 
 @RestController
 public class LoginController {
@@ -34,7 +32,7 @@ public class LoginController {
 	private Message message;
 
 	@RequestMapping(value = { "/login" }, method = RequestMethod.POST)
-	public GeneralResponseDTO<?> login(@Valid LoginDTO userDTO, BindingResult bindingResult) {
+	public GeneralResponseDTO<?> login(@Valid LoginDTO loginDTO, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			return BindingUtils.getErrorResponse(bindingResult);
 		}
@@ -42,8 +40,8 @@ public class LoginController {
 			return new GeneralResponseDTO<>().buildEmptyWithMessage(Status.ERROR, message.loginAlready);
 		}
 		try {
-			loginService.login(userDTO);
-			sessionUtils.getSession().setAttribute("user", userDTO);
+			loginService.login(loginDTO);
+			sessionUtils.addOrUpdateUser(loginDTO, loginService);
 			return new GeneralResponseDTO<>().buildEmptyWithMessage(Status.OK, message.loginSuccess);
 		} catch (LoginException e) {
 			return new GeneralResponseDTO<>().buildEmptyWithMessage(Status.ERROR, e.getMessage());
@@ -53,20 +51,23 @@ public class LoginController {
 	@RequestMapping(value = { "/logout" }, method = RequestMethod.GET)
 	public GeneralResponseDTO<?> logout() {
 		if (!sessionUtils.isUserLoggedIn()) {
-			new GeneralResponseDTO<>().buildEmptyWithMessage(Status.ERROR, message.loginFail);
+			return new GeneralResponseDTO<>().buildEmptyWithMessage(Status.ERROR, message.logoutFail);
 		}
-		return new GeneralResponseDTO<>().buildEmptyWithMessage(Status.OK, message.loginSuccess);
+		sessionUtils.destroy();
+		return new GeneralResponseDTO<>().buildEmptyWithMessage(Status.OK, message.logoutSuccess);
 	}
 
 	@RequestMapping(value = { "/register" }, method = RequestMethod.POST)
-	public GeneralResponseDTO<?> register(@Valid StaffDTO staffDTO) {
-		loginService.register(staffDTO);
-		return null;
-	}
-
-	@RequestMapping(value = { "/profile" }, method = RequestMethod.POST)
-	public GeneralResponseDTO<?> getProfile() {
-		return null;
+	public GeneralResponseDTO<?> register(@Valid StaffDTO staffDTO, BindingResult bindingResult) {
+		if (bindingResult.hasErrors()) {
+			return BindingUtils.getErrorResponse(bindingResult);
+		}
+		try {
+			loginService.register(staffDTO);
+		} catch (AuthException e) {
+			return new GeneralResponseDTO<>().buildEmptyWithMessage(Status.ERROR, e.getMessage());
+		}
+		return new GeneralResponseDTO<>().buildEmptyWithMessage(Status.OK, message.registerSuccess);
 	}
 
 }

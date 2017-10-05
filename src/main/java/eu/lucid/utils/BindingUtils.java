@@ -10,8 +10,8 @@ import eu.lucid.rest.response.Status;
 public class BindingUtils {
 
 	public static GeneralResponseDTO<?> getErrorResponse(BindingResult bindingResult) {
-		return new GeneralResponseDTO<>().buildEmptyWithMessage(Status.ERROR, bindingResult.getAllErrors().stream()
-				.map(e -> e.getDefaultMessage().toString()).collect(Collectors.joining(",\n")));
+		return new GeneralResponseDTO<>().buildEmptyWithMessage(Status.ERROR, bindingResult.getFieldErrors().stream()
+				.map(e -> e.getField() + " " + e.getDefaultMessage()).collect(Collectors.joining(",")));
 	}
 
 }
