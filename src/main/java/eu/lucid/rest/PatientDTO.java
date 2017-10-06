@@ -6,7 +6,6 @@ import javax.validation.constraints.NotNull;
 
 import eu.lucid.domain.MedicalRecord;
 import eu.lucid.domain.Patient;
-import eu.lucid.utils.DateUtils;
 
 public class PatientDTO {
 
@@ -30,7 +29,7 @@ public class PatientDTO {
 		this.id = patient.getId();
 		this.firstName = patient.getFirstName();
 		this.lastName = patient.getLastName();
-		this.birthDate = DateUtils.DateToString(patient.getBirthDate());
+		//this.birthDate = DateService.DateToString(patient.getBirthDate());
 		this.medicalRecords = patient.getMedicalRecords();
 	}
 

@@ -5,7 +5,6 @@ import javax.validation.constraints.NotNull;
 import eu.lucid.domain.Speciality;
 import eu.lucid.domain.Staff;
 import eu.lucid.rest.request.LoginDTO;
-import eu.lucid.utils.DateUtils;
 
 public class StaffDTO {
 
@@ -34,7 +33,7 @@ public class StaffDTO {
 		this.staffId = staff.getId();
 		this.firstName = staff.getFirstName();
 		this.lastName = staff.getLastName();
-		this.birthDate = DateUtils.DateToString(staff.getBirthDate());
+	//	this.birthDate = DateService.DateToString(staff.getBirthDate());
 		this.speciality = staff.getSpeciality().toString();
 		this.loginDTO.setLogin(staff.getUser().getLogin());
 		this.loginDTO.setPassword(staff.getUser().getPassword());

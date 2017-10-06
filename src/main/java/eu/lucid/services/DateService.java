@@ -1,17 +1,20 @@
-package eu.lucid.utils;
+package eu.lucid.services;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-public class DateUtils {
+import org.springframework.stereotype.Service;
 
-	public static String DateToString(Date date) {
+@Service
+public class DateService {
+
+	public String DateToString(Date date) {
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		return simpleDateFormat.format(date);
 	}
 
-	public static Date StringToDate(String date) {
+	public Date StringToDate(String date) {
 		String[] data = date.split("-");
 		int year = Integer.valueOf(data[0]);
 		int month = Integer.valueOf(data[1]);

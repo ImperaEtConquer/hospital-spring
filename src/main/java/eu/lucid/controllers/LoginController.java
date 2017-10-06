@@ -15,9 +15,9 @@ import eu.lucid.rest.StaffDTO;
 import eu.lucid.rest.request.LoginDTO;
 import eu.lucid.rest.response.GeneralResponseDTO;
 import eu.lucid.rest.response.Status;
+import eu.lucid.services.BindingService;
 import eu.lucid.services.LoginService;
-import eu.lucid.utils.BindingUtils;
-import eu.lucid.utils.SessionUtils;
+import eu.lucid.services.SessionService;
 
 @RestController
 public class LoginController {
@@ -26,7 +26,10 @@ public class LoginController {
 	private LoginService loginService;
 
 	@Autowired
-	private SessionUtils sessionUtils;
+	private SessionService sessionService;
+
+	@Autowired
+	private BindingService bindingService;
 
 	@Autowired
 	private Message message;
@@ -34,14 +37,14 @@ public class LoginController {
 	@RequestMapping(value = { "/login" }, method = RequestMethod.POST)
 	public GeneralResponseDTO<?> login(@Valid LoginDTO loginDTO, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
-			return BindingUtils.getErrorResponse(bindingResult);
+			return bindingService.getErrorResponse(bindingResult);
 		}
-		if (sessionUtils.isUserLoggedIn()) {
+		if (sessionService.isUserLoggedIn()) {
 			return new GeneralResponseDTO<>().buildEmptyWithMessage(Status.ERROR, message.loginAlready);
 		}
 		try {
 			loginService.login(loginDTO);
-			sessionUtils.addOrUpdateUser(loginDTO, loginService);
+			sessionService.addOrUpdateUser(loginDTO, loginService);
 			return new GeneralResponseDTO<>().buildEmptyWithMessage(Status.OK, message.loginSuccess);
 		} catch (LoginException e) {
 			return new GeneralResponseDTO<>().buildEmptyWithMessage(Status.ERROR, e.getMessage());
@@ -50,17 +53,17 @@ public class LoginController {
 
 	@RequestMapping(value = { "/logout" }, method = RequestMethod.GET)
 	public GeneralResponseDTO<?> logout() {
-		if (!sessionUtils.isUserLoggedIn()) {
+		if (!sessionService.isUserLoggedIn()) {
 			return new GeneralResponseDTO<>().buildEmptyWithMessage(Status.ERROR, message.logoutFail);
 		}
-		sessionUtils.destroy();
+		sessionService.destroy();
 		return new GeneralResponseDTO<>().buildEmptyWithMessage(Status.OK, message.logoutSuccess);
 	}
 
 	@RequestMapping(value = { "/register" }, method = RequestMethod.POST)
 	public GeneralResponseDTO<?> register(@Valid StaffDTO staffDTO, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
-			return BindingUtils.getErrorResponse(bindingResult);
+			return bindingService.getErrorResponse(bindingResult);
 		}
 		try {
 			loginService.register(staffDTO);
@@ -69,5 +72,4 @@ public class LoginController {
 		}
 		return new GeneralResponseDTO<>().buildEmptyWithMessage(Status.OK, message.registerSuccess);
 	}
-
 }

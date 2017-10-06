@@ -1,17 +1,17 @@
-package eu.lucid.utils;
+package eu.lucid.services;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import eu.lucid.domain.Speciality;
 import eu.lucid.rest.StaffDTO;
 import eu.lucid.rest.request.LoginDTO;
 import eu.lucid.services.LoginService;
 
-@Component
-public class SessionUtils {
+@Service
+public class SessionService {
 
 	@Autowired
 	private HttpSession httpSession;

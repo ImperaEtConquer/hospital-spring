@@ -16,8 +16,6 @@ import eu.lucid.repositories.StaffRepository;
 import eu.lucid.repositories.UserRepository;
 import eu.lucid.rest.StaffDTO;
 import eu.lucid.rest.request.LoginDTO;
-import eu.lucid.utils.DateUtils;
-import eu.lucid.utils.EncryptUtils;
 
 @Service
 public class LoginService {
@@ -27,6 +25,9 @@ public class LoginService {
 
 	@Autowired
 	private StaffRepository staffRepository;
+	
+	@Autowired
+	private DateService dateService;
 
 	@Autowired
 	private Message message;
@@ -36,7 +37,7 @@ public class LoginService {
 		if (user == null) {
 			throw new LoginException(message.loginNull);
 		}
-		if (!user.getPassword().equals(EncryptUtils.encryptPassword(loginDTO.getPassword()))) {
+		if (!user.getPassword().equals(EncryptService.encryptPassword(loginDTO.getPassword()))) {
 			throw new LoginException(message.loginFail);
 		}
 	}
@@ -44,14 +45,14 @@ public class LoginService {
 	public void register(StaffDTO staffDTO) throws AuthException {
 		User user = new User.Builder()
 				.login(staffDTO.getLoginDTO().getLogin())
-				.password(staffDTO.getLoginDTO().getPassword())
+				.password(EncryptService.encryptPassword(staffDTO.getLoginDTO().getPassword()))
 				.registeredAt(Date.from(Instant.now()))
 				.build();
 		
 		Staff staff = new Staff.Builder()
 				.firstName(staffDTO.getFirstName())
 				.lastName(staffDTO.getLastName())
-				.birthDate(DateUtils.StringToDate(staffDTO.getBirthDate()))
+				.birthDate(dateService.StringToDate(staffDTO.getBirthDate()))
 				.speciality(staffDTO.specialityAsEnum())
 				.user(user)
 				.build();
