@@ -40,9 +40,6 @@ public class Assignment {
 	@ManyToOne
 	@PrimaryKeyJoinColumn
 	private Staff performer;
-	
-	public Assignment() {
-	}
 
 	public Long getId() {
 		return assignmentId;

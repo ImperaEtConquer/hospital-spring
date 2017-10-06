@@ -20,20 +20,24 @@ import eu.lucid.services.SessionService;
 @RestController
 public class ProfileController {
 
-	@Autowired
-	private LoginService loginService;
+	private final LoginService loginService;
+
+	private final StaffService staffService;
+
+	private final SessionService sessionService;
+
+	private final BindingService bindingService;
+
+	private final Message message;
 
 	@Autowired
-	private StaffService staffService;
-
-	@Autowired
-	private SessionService sessionService;
-
-	@Autowired
-	private BindingService bindingService;
-
-	@Autowired
-	private Message message;
+	public ProfileController(LoginService loginService, StaffService staffService, SessionService sessionService, BindingService bindingService, Message message) {
+		this.loginService = loginService;
+		this.staffService = staffService;
+		this.sessionService = sessionService;
+		this.bindingService = bindingService;
+		this.message = message;
+	}
 
 	@RequestMapping(value = { "/profile" }, method = RequestMethod.GET)
 	public GeneralResponseDTO<?> getProfile() {

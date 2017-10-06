@@ -36,9 +36,6 @@ public class MedicalRecord {
 
 	@OneToMany(mappedBy = "medicalRecord", cascade = CascadeType.ALL)
 	private List<Assignment> assignments;
-	
-	public MedicalRecord() {
-	}
 
 	public Long getId() {
 		return medicalRecordId;

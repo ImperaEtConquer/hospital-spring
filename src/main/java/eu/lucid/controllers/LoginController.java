@@ -22,17 +22,21 @@ import eu.lucid.services.SessionService;
 @RestController
 public class LoginController {
 
-	@Autowired
-	private LoginService loginService;
+	private final LoginService loginService;
+
+	private final SessionService sessionService;
+
+	private final BindingService bindingService;
+
+	private final Message message;
 
 	@Autowired
-	private SessionService sessionService;
-
-	@Autowired
-	private BindingService bindingService;
-
-	@Autowired
-	private Message message;
+	public LoginController(LoginService loginService, SessionService sessionService, BindingService bindingService, Message message) {
+		this.loginService = loginService;
+		this.sessionService = sessionService;
+		this.bindingService = bindingService;
+		this.message = message;
+	}
 
 	@RequestMapping(value = { "/login" }, method = RequestMethod.POST)
 	public GeneralResponseDTO<?> login(@Valid LoginDTO loginDTO, BindingResult bindingResult) {
