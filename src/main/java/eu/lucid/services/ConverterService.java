@@ -13,12 +13,13 @@ import eu.lucid.domain.Speciality;
 import eu.lucid.domain.Staff;
 import eu.lucid.domain.User;
 import eu.lucid.rest.PatientDTO;
+import eu.lucid.rest.ProfileDTO;
 import eu.lucid.rest.StaffDTO;
 
 @Service
 public class ConverterService {
 	
-	public Staff DTOtoStaff(StaffDTO staffDTO) {
+	public Staff convertStaffDTOtoStaff(StaffDTO staffDTO) {
 		User user = new User.Builder()
 				.login(staffDTO.getLogin())
 				.password(encryptPassword(staffDTO.getPassword()))
@@ -36,7 +37,7 @@ public class ConverterService {
 		return staff;
 	}
 	
-	public StaffDTO staffToDTO(Staff staff) {
+	public StaffDTO convertStaffToStaffDTO(Staff staff) {
 		StaffDTO staffDTO = new StaffDTO.Builder()
 				.staffId(staff.getId())
 				.firstName(staff.getFirstName())
@@ -49,13 +50,24 @@ public class ConverterService {
 		return staffDTO;
 	}
 	
-	public Patient DTOtoPatient (PatientDTO patientDTO) {
+	public Patient convertDTOtoPatient (PatientDTO patientDTO) {
 		Patient patient = new Patient.Builder()
 				.firstName(patientDTO.getFirstName())
 				.lastName(patientDTO.getLastName())
 				.birthDate(stringToDate(patientDTO.getBirthDate()))
 				.build();
 		return patient;
+	}
+	
+	public ProfileDTO convertStaffToProfileDTO (Staff staff) {
+		ProfileDTO profileDTO = new ProfileDTO.Builder()
+				.staffId(staff.getId())
+				.firstName(staff.getFirstName())
+				.lastName(staff.getLastName())
+				.birthDate(dateToString(staff.getBirthDate()))
+				.speciality(staff.getSpeciality().toString())
+				.build();
+		return profileDTO;
 	}
 
 	public Speciality specialityAsEnum(String speciality) {

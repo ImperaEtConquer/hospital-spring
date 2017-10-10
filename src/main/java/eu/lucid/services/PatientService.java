@@ -25,7 +25,7 @@ public class PatientService {
 	}
 
 	public void registerPatient(PatientDTO patientDTO) {
-		Patient patient = converterService.DTOtoPatient(patientDTO);
+		Patient patient = converterService.convertDTOtoPatient(patientDTO);
 		patientRepository.save(patient);
 	}
 

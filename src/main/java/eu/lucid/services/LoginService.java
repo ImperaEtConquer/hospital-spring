@@ -45,7 +45,7 @@ public class LoginService {
 	}
 
 	public void register(StaffDTO staffDTO) throws AuthException {
-		Staff staff = converterService.DTOtoStaff(staffDTO);
+		Staff staff = converterService.convertStaffDTOtoStaff(staffDTO);
 		if (isExists(staff.getUser())) {
 			throw new AuthException(message.registerFail);
 		}
@@ -54,7 +54,7 @@ public class LoginService {
 
 	public StaffDTO getUserByLogin(String login) {
 		Staff staff = userRepository.findByLogin(login).getStaff();
-		StaffDTO staffDTO = converterService.staffToDTO(staff);
+		StaffDTO staffDTO = converterService.convertStaffToStaffDTO(staff);
 		return staffDTO;
 	}
 

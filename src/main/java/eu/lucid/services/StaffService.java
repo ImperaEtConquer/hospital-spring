@@ -1,5 +1,8 @@
 package eu.lucid.services;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,5 +35,18 @@ public class StaffService {
 
 	public void deleteProfile(StaffDTO staffDTO) {
 		staffRepository.delete(staffDTO.getStaffId());
+	}
+	
+	public ProfileDTO findOne(Long id) {
+		Staff staff = staffRepository.findOne(id);
+		return converterService.convertStaffToProfileDTO(staff);
+	}
+	
+	public List<ProfileDTO> findAll(){
+		List<Staff> staffList = staffRepository.findAll();
+		List<ProfileDTO> profileDTOlist = staffList.stream()
+				.map(e -> converterService.convertStaffToProfileDTO(e))
+				.collect(Collectors.toList());
+		return profileDTOlist;
 	}
 }
