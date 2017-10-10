@@ -33,7 +33,6 @@ public class ConverterService {
 				.speciality(specialityAsEnum(staffDTO.getSpeciality()))
 				.user(user)
 				.build();
-		
 		return staff;
 	}
 	
@@ -46,11 +45,10 @@ public class ConverterService {
 				.speciality(staff.getSpeciality().toString())
 				.login(staff.getUser().getLogin())
 				.build();
-		
 		return staffDTO;
 	}
 	
-	public Patient convertDTOtoPatient (PatientDTO patientDTO) {
+	public Patient convertPatientDTOtoPatient (PatientDTO patientDTO) {
 		Patient patient = new Patient.Builder()
 				.firstName(patientDTO.getFirstName())
 				.lastName(patientDTO.getLastName())
@@ -68,6 +66,16 @@ public class ConverterService {
 				.speciality(staff.getSpeciality().toString())
 				.build();
 		return profileDTO;
+	}
+	
+	public PatientDTO convertPatientToPatientDTO (Patient patient) {
+		PatientDTO patientDTO = new PatientDTO.Builder()
+				.id(patient.getId())
+				.firstName(patient.getFirstName())
+				.lastName(patient.getLastName())
+				.birthDate(dateToString(patient.getBirthDate()))
+				.build();
+		return patientDTO;	
 	}
 
 	public Speciality specialityAsEnum(String speciality) {

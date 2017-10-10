@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import eu.lucid.config.Message;
 import eu.lucid.rest.ProfileDTO;
 import eu.lucid.rest.response.GeneralResponseDTO;
 import eu.lucid.rest.response.Status;
@@ -19,22 +20,25 @@ public class StaffController {
 
 	private final StaffService staffService;
 
+	private final Message message;
+
 	@Autowired
-	public StaffController(SessionService sessionService, StaffService staffService) {
+	public StaffController(SessionService sessionService, StaffService staffService, Message message) {
 		this.sessionService = sessionService;
 		this.staffService = staffService;
+		this.message = message;
 	}
 
 	@RequestMapping(value = { "/staff" }, method = RequestMethod.GET)
-	public GeneralResponseDTO<?> getProfile() {
+	public GeneralResponseDTO<?> getAllStaff() {
 		if (sessionService.isUserLoggedIn()) {
 			return new GeneralResponseDTO<>().buildWithData(staffService.findAll());
 		}
-		return new GeneralResponseDTO<>().buildEmptyWithMessage(Status.ERROR, "not logged");
+		return new GeneralResponseDTO<>().buildEmptyWithMessage(Status.ERROR, message.notLogged);
 	}
 
 	@RequestMapping(value = { "/staff/{id}" }, method = RequestMethod.GET)
-	public GeneralResponseDTO<?> updateProfile(@PathVariable Long id) {
+	public GeneralResponseDTO<?> getStaffById(@PathVariable Long id) {
 		if (sessionService.isUserLoggedIn()) {
 			ProfileDTO profile = staffService.findOne(id);
 			if (profile != null) {
@@ -43,6 +47,6 @@ public class StaffController {
 				return new GeneralResponseDTO<>().buildEmptyWithMessage(Status.ERROR, "not found");
 			}
 		}
-		return new GeneralResponseDTO<>().buildEmptyWithMessage(Status.ERROR, "not logged");
+		return new GeneralResponseDTO<>().buildEmptyWithMessage(Status.ERROR, message.notLogged);
 	}
 }

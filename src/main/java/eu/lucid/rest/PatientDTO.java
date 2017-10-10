@@ -1,11 +1,6 @@
 package eu.lucid.rest;
 
-import java.util.List;
-
 import javax.validation.constraints.NotNull;
-
-import eu.lucid.domain.MedicalRecord;
-import eu.lucid.domain.Patient;
 
 public class PatientDTO {
 
@@ -19,19 +14,6 @@ public class PatientDTO {
 
 	@NotNull
 	private String birthDate;
-
-	private List<MedicalRecord> medicalRecords;
-
-	public PatientDTO() {
-	}
-
-	public PatientDTO(Patient patient) {
-		this.id = patient.getId();
-		this.firstName = patient.getFirstName();
-		this.lastName = patient.getLastName();
-		//this.birthDate = DateService.DateToString(patient.getBirthDate());
-		this.medicalRecords = patient.getMedicalRecords();
-	}
 
 	public Long getId() {
 		return id;
@@ -65,12 +47,41 @@ public class PatientDTO {
 		this.birthDate = birthDate;
 	}
 
-	public List<MedicalRecord> getMedicalRecords() {
-		return medicalRecords;
+	public static class Builder {
+		private Long id;
+		private String firstName;
+		private String lastName;
+		private String birthDate;
+
+		public Builder id(Long id) {
+			this.id = id;
+			return this;
+		}
+
+		public Builder firstName(String firstName) {
+			this.firstName = firstName;
+			return this;
+		}
+
+		public Builder lastName(String lastName) {
+			this.lastName = lastName;
+			return this;
+		}
+
+		public Builder birthDate(String birthDate) {
+			this.birthDate = birthDate;
+			return this;
+		}
+
+		public PatientDTO build() {
+			return new PatientDTO(this);
+		}
 	}
 
-	public void setMedicalRecords(List<MedicalRecord> medicalRecords) {
-		this.medicalRecords = medicalRecords;
+	private PatientDTO(Builder builder) {
+		this.id = builder.id;
+		this.firstName = builder.firstName;
+		this.lastName = builder.lastName;
+		this.birthDate = builder.birthDate;
 	}
-
 }

@@ -24,16 +24,22 @@ public class PatientService {
 		this.converterService = converterService;
 	}
 
+	public PatientDTO findOne(Long id) {
+		Patient patient = patientRepository.findOne(id);
+		return converterService.convertPatientToPatientDTO(patient);
+	}
+
 	public void registerPatient(PatientDTO patientDTO) {
-		Patient patient = converterService.convertDTOtoPatient(patientDTO);
+		Patient patient = converterService.convertPatientDTOtoPatient(patientDTO);
 		patientRepository.save(patient);
 	}
 
 	public List<PatientDTO> findAll() {
-		List<PatientDTO> patientsDTO = new ArrayList<>();
+		List<PatientDTO> patientsDTOlist = new ArrayList<>();
 		for (Patient patient : patientRepository.findAll()) {
-			patientsDTO.add(new PatientDTO(patient));
+			PatientDTO patientDTO = converterService.convertPatientToPatientDTO(patient);
+			patientsDTOlist.add(patientDTO);
 		}
-		return patientsDTO;
+		return patientsDTOlist;
 	}
 }
