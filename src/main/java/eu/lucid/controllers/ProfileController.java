@@ -1,14 +1,14 @@
 package eu.lucid.controllers;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import eu.lucid.config.Message;
+import eu.lucid.rest.ProfileDTO;
 import eu.lucid.rest.StaffDTO;
 import eu.lucid.rest.response.GeneralResponseDTO;
 import eu.lucid.rest.response.Status;
@@ -31,7 +31,8 @@ public class ProfileController {
 	private final Message message;
 
 	@Autowired
-	public ProfileController(LoginService loginService, StaffService staffService, SessionService sessionService, BindingService bindingService, Message message) {
+	public ProfileController(LoginService loginService, StaffService staffService, SessionService sessionService,
+			BindingService bindingService, Message message) {
 		this.loginService = loginService;
 		this.staffService = staffService;
 		this.sessionService = sessionService;
@@ -48,13 +49,14 @@ public class ProfileController {
 	}
 
 	@RequestMapping(value = { "/profile" }, method = RequestMethod.PUT)
-	public GeneralResponseDTO<?> updateProfile(@Valid StaffDTO staffDTO, BindingResult bindingResult) {
+	public GeneralResponseDTO<?> updateProfile(@RequestBody ProfileDTO profileDTO, BindingResult bindingResult) {
 		if (bindingResult.hasErrors()) {
 			return bindingService.getErrorResponse(bindingResult);
 		}
 		if (sessionService.isUserLoggedIn()) {
-			staffService.updateProfile(staffDTO);
-			sessionService.addOrUpdateUser(loginService.getUserByLogin(staffDTO.getLogin()));
+			staffService.updateProfile(profileDTO);
+			StaffDTO staffDTO = loginService.getUserByLogin(sessionService.getUser().getLogin());
+			sessionService.addOrUpdateUser(staffDTO);
 			return new GeneralResponseDTO<>().buildEmptyWithMessage(Status.OK, message.userUpdateSuccess);
 		}
 		return new GeneralResponseDTO<>().buildEmptyWithMessage(Status.ERROR, message.notLogged);

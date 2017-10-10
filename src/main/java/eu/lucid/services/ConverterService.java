@@ -43,6 +43,7 @@ public class ConverterService {
 				.lastName(staff.getLastName())
 				.birthDate(dateToString(staff.getBirthDate()))
 				.speciality(staff.getSpeciality().toString())
+				.login(staff.getUser().getLogin())
 				.build();
 		
 		return staffDTO;

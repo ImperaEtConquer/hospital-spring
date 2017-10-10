@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import eu.lucid.domain.Staff;
 import eu.lucid.repositories.StaffRepository;
+import eu.lucid.rest.ProfileDTO;
 import eu.lucid.rest.StaffDTO;
 
 @Service
@@ -20,12 +21,12 @@ public class StaffService {
 		this.converterService = converterService;
 	}
 
-	public void updateProfile(StaffDTO staffDTO) {
-		Staff staff = staffRepository.findOne(staffDTO.getStaffId());
-		staff.setFirstName(staffDTO.getFirstName());
-		staff.setLastName(staffDTO.getLastName());
-		staff.setBirthDate(converterService.stringToDate(staffDTO.getBirthDate()));
-		staff.setSpeciality(converterService.specialityAsEnum(staffDTO.getSpeciality()));
+	public void updateProfile(ProfileDTO profileDTO) {
+		Staff staff = staffRepository.findOne(profileDTO.getStaffId());
+		staff.setFirstName(profileDTO.getFirstName());
+		staff.setLastName(profileDTO.getLastName());
+		staff.setBirthDate(converterService.stringToDate(profileDTO.getBirthDate()));
+		staff.setSpeciality(converterService.specialityAsEnum(profileDTO.getSpeciality()));
 		staffRepository.save(staff);
 	}
 
