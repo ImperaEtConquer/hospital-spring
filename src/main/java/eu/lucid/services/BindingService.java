@@ -12,8 +12,11 @@ import eu.lucid.rest.response.Status;
 public class BindingService {
 
 	public GeneralResponseDTO<?> getErrorResponse(BindingResult bindingResult) {
-		return new GeneralResponseDTO<>().buildEmptyWithMessage(Status.ERROR, bindingResult.getFieldErrors().stream()
-				.map(e -> e.getField() + " " + e.getDefaultMessage()).collect(Collectors.joining(",")));
+		return new GeneralResponseDTO<>()
+				.buildEmptyWithMessage(Status.ERROR, bindingResult.getFieldErrors()
+				.stream()
+				.map(e -> e.getField() + " " + e.getDefaultMessage())
+				.collect(Collectors.joining(",")));
 	}
 
 }

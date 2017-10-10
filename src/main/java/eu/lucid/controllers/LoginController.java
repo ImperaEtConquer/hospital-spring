@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import eu.lucid.config.Message;
+import eu.lucid.rest.LoginDTO;
 import eu.lucid.rest.StaffDTO;
-import eu.lucid.rest.request.LoginDTO;
 import eu.lucid.rest.response.GeneralResponseDTO;
 import eu.lucid.rest.response.Status;
 import eu.lucid.services.BindingService;

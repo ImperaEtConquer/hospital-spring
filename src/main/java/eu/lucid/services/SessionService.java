@@ -11,8 +11,12 @@ import eu.lucid.rest.StaffDTO;
 @Service
 public class SessionService {
 
+	private final HttpSession httpSession;
+
 	@Autowired
-	private HttpSession httpSession;
+	public SessionService(HttpSession httpSession) {
+		this.httpSession = httpSession;
+	}
 
 	public HttpSession getSession() {
 		return httpSession;

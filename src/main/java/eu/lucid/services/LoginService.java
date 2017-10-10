@@ -11,23 +11,28 @@ import eu.lucid.domain.Staff;
 import eu.lucid.domain.User;
 import eu.lucid.repositories.StaffRepository;
 import eu.lucid.repositories.UserRepository;
+import eu.lucid.rest.LoginDTO;
 import eu.lucid.rest.StaffDTO;
-import eu.lucid.rest.request.LoginDTO;
 
 @Service
 public class LoginService {
 
-	@Autowired
-	private UserRepository userRepository;
+	private final UserRepository userRepository;
+
+	private final StaffRepository staffRepository;
+
+	private final Message message;
+
+	private final ConverterService converterService;
 
 	@Autowired
-	private StaffRepository staffRepository;
-
-	@Autowired
-	private Message message;
-
-	@Autowired
-	private ConverterService converterService;
+	public LoginService(UserRepository userRepository, StaffRepository staffRepository, Message message,
+			ConverterService converterService) {
+		this.userRepository = userRepository;
+		this.staffRepository = staffRepository;
+		this.message = message;
+		this.converterService = converterService;
+	}
 
 	public void login(LoginDTO loginDTO) throws LoginException {
 		User user = userRepository.findByLogin(loginDTO.getLogin());

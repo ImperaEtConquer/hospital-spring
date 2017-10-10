@@ -10,11 +10,15 @@ import eu.lucid.rest.StaffDTO;
 @Service
 public class StaffService {
 
-	@Autowired
-	private StaffRepository staffRepository;
+	private final StaffRepository staffRepository;
+
+	private final ConverterService converterService;
 
 	@Autowired
-	private ConverterService converterService;
+	public StaffService(StaffRepository staffRepository, ConverterService converterService) {
+		this.staffRepository = staffRepository;
+		this.converterService = converterService;
+	}
 
 	public void updateProfile(StaffDTO staffDTO) {
 		Staff staff = staffRepository.findOne(staffDTO.getStaffId());

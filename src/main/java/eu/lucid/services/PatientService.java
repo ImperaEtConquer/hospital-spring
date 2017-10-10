@@ -13,11 +13,16 @@ import eu.lucid.rest.PatientDTO;
 @Service
 public class PatientService {
 
+	private final PatientRepository patientRepository;
+
+	private final ConverterService converterService;
+
 	@Autowired
-	private PatientRepository patientRepository;
-	
-	@Autowired
-	private ConverterService converterService;
+	public PatientService(PatientRepository patientRepository, ConverterService converterService) {
+		super();
+		this.patientRepository = patientRepository;
+		this.converterService = converterService;
+	}
 
 	public void registerPatient(PatientDTO patientDTO) {
 		Patient patient = converterService.DTOtoPatient(patientDTO);
