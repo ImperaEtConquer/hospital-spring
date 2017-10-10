@@ -1,8 +1,5 @@
 package eu.lucid.services;
 
-import java.time.Instant;
-import java.util.Date;
-
 import javax.security.auth.login.LoginException;
 import javax.security.auth.message.AuthException;
 
@@ -25,48 +22,34 @@ public class LoginService {
 
 	@Autowired
 	private StaffRepository staffRepository;
-	
-	@Autowired
-	private DateService dateService;
 
 	@Autowired
 	private Message message;
+
+	@Autowired
+	private ConverterService converterService;
 
 	public void login(LoginDTO loginDTO) throws LoginException {
 		User user = userRepository.findByLogin(loginDTO.getLogin());
 		if (user == null) {
 			throw new LoginException(message.loginNull);
 		}
-		if (!user.getPassword().equals(EncryptService.encryptPassword(loginDTO.getPassword()))) {
+		if (!user.getPassword().equals(converterService.encryptPassword(loginDTO.getPassword()))) {
 			throw new LoginException(message.loginFail);
 		}
 	}
 
 	public void register(StaffDTO staffDTO) throws AuthException {
-		User user = new User.Builder()
-				.login(staffDTO.getLoginDTO().getLogin())
-				.password(EncryptService.encryptPassword(staffDTO.getLoginDTO().getPassword()))
-				.registeredAt(Date.from(Instant.now()))
-				.build();
-		
-		Staff staff = new Staff.Builder()
-				.firstName(staffDTO.getFirstName())
-				.lastName(staffDTO.getLastName())
-				.birthDate(dateService.StringToDate(staffDTO.getBirthDate()))
-				.speciality(staffDTO.specialityAsEnum())
-				.user(user)
-				.build();
-		
-		if (isExists(user)) {
+		Staff staff = converterService.DTOtoStaff(staffDTO);
+		if (isExists(staff.getUser())) {
 			throw new AuthException(message.registerFail);
 		}
-		
 		staffRepository.save(staff);
 	}
-	
-	public StaffDTO getUser(LoginDTO loginDTO) {
-		Staff staff = userRepository.findByLogin(loginDTO.getLogin()).getStaff();
-		StaffDTO staffDTO = new StaffDTO(staff);
+
+	public StaffDTO getUserByLogin(String login) {
+		Staff staff = userRepository.findByLogin(login).getStaff();
+		StaffDTO staffDTO = converterService.staffToDTO(staff);
 		return staffDTO;
 	}
 

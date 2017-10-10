@@ -2,10 +2,6 @@ package eu.lucid.rest;
 
 import javax.validation.constraints.NotNull;
 
-import eu.lucid.domain.Speciality;
-import eu.lucid.domain.Staff;
-import eu.lucid.rest.request.LoginDTO;
-
 public class StaffDTO {
 
 	private Long staffId;
@@ -23,21 +19,10 @@ public class StaffDTO {
 	private String speciality;
 
 	@NotNull
-	private LoginDTO loginDTO;
+	private String login;
 
-	public StaffDTO() {
-
-	}
-
-	public StaffDTO(Staff staff) {
-		this.staffId = staff.getId();
-		this.firstName = staff.getFirstName();
-		this.lastName = staff.getLastName();
-	//	this.birthDate = DateService.DateToString(staff.getBirthDate());
-		this.speciality = staff.getSpeciality().toString();
-		this.loginDTO.setLogin(staff.getUser().getLogin());
-		this.loginDTO.setPassword(staff.getUser().getPassword());
-	}
+	@NotNull
+	private String password;
 
 	public Long getStaffId() {
 		return staffId;
@@ -75,20 +60,80 @@ public class StaffDTO {
 		return speciality;
 	}
 
-	public Speciality specialityAsEnum() {
-		return speciality.toUpperCase().equals("DOCTOR") ? Speciality.DOCTOR : Speciality.NURSE;
-	}
-
 	public void setSpeciality(String speciality) {
 		this.speciality = speciality;
 	}
 
-	public LoginDTO getLoginDTO() {
-		return loginDTO;
+	public String getLogin() {
+		return login;
 	}
 
-	public void setLoginDTO(LoginDTO loginDTO) {
-		this.loginDTO = loginDTO;
+	public void setLogin(String login) {
+		this.login = login;
 	}
 
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public static class Builder {
+		private Long staffId;
+		private String firstName;
+		private String lastName;
+		private String birthDate;
+		private String speciality;
+		private String login;
+		private String password;
+
+		public Builder staffId(Long staffId) {
+			this.staffId = staffId;
+			return this;
+		}
+
+		public Builder firstName(String firstName) {
+			this.firstName = firstName;
+			return this;
+		}
+
+		public Builder lastName(String lastName) {
+			this.lastName = lastName;
+			return this;
+		}
+
+		public Builder birthDate(String birthDate) {
+			this.birthDate = birthDate;
+			return this;
+		}
+
+		public Builder speciality(String speciality) {
+			this.speciality = speciality;
+			return this;
+		}
+
+		public Builder login(String login) {
+			this.login = login;
+			return this;
+		}
+
+		public Builder password(String password) {
+			this.password = password;
+			return this;
+		}
+
+		public StaffDTO build() {
+			StaffDTO staffDTO = new StaffDTO();
+			staffDTO.staffId = staffId;
+			staffDTO.firstName = firstName;
+			staffDTO.lastName = lastName;
+			staffDTO.birthDate = birthDate;
+			staffDTO.speciality = speciality;
+			staffDTO.login = login;
+			staffDTO.password = password;
+			return staffDTO;
+		}
+	}
 }

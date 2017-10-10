@@ -14,14 +14,14 @@ public class StaffService {
 	private StaffRepository staffRepository;
 
 	@Autowired
-	private DateService dateService;
+	private ConverterService converterService;
 
 	public void updateProfile(StaffDTO staffDTO) {
 		Staff staff = staffRepository.findOne(staffDTO.getStaffId());
 		staff.setFirstName(staffDTO.getFirstName());
 		staff.setLastName(staffDTO.getLastName());
-		staff.setBirthDate(dateService.StringToDate(staffDTO.getBirthDate()));
-		staff.setSpeciality(staffDTO.specialityAsEnum());
+		staff.setBirthDate(converterService.stringToDate(staffDTO.getBirthDate()));
+		staff.setSpeciality(converterService.specialityAsEnum(staffDTO.getSpeciality()));
 		staffRepository.save(staff);
 	}
 

@@ -31,7 +31,8 @@ public class LoginController {
 	private final Message message;
 
 	@Autowired
-	public LoginController(LoginService loginService, SessionService sessionService, BindingService bindingService, Message message) {
+	public LoginController(LoginService loginService, SessionService sessionService, BindingService bindingService,
+			Message message) {
 		this.loginService = loginService;
 		this.sessionService = sessionService;
 		this.bindingService = bindingService;
@@ -48,7 +49,8 @@ public class LoginController {
 		}
 		try {
 			loginService.login(loginDTO);
-			sessionService.addOrUpdateUser(loginDTO, loginService);
+			StaffDTO staffDTO = loginService.getUserByLogin(loginDTO.getLogin());
+			sessionService.addOrUpdateUser(staffDTO);
 			return new GeneralResponseDTO<>().buildEmptyWithMessage(Status.OK, message.loginSuccess);
 		} catch (LoginException e) {
 			return new GeneralResponseDTO<>().buildEmptyWithMessage(Status.ERROR, e.getMessage());

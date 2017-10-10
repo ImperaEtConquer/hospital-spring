@@ -9,20 +9,18 @@ import org.springframework.stereotype.Service;
 import eu.lucid.domain.Patient;
 import eu.lucid.repositories.PatientRepository;
 import eu.lucid.rest.PatientDTO;
-import eu.lucid.services.DateService;
 
 @Service
 public class PatientService {
 
 	@Autowired
 	private PatientRepository patientRepository;
-
+	
 	@Autowired
-	private DateService dateService;
+	private ConverterService converterService;
 
 	public void registerPatient(PatientDTO patientDTO) {
-		Patient patient = new Patient.Builder().firstName(patientDTO.getFirstName()).lastName(patientDTO.getLastName())
-				.birthDate(dateService.StringToDate(patientDTO.getBirthDate())).build();
+		Patient patient = converterService.DTOtoPatient(patientDTO);
 		patientRepository.save(patient);
 	}
 

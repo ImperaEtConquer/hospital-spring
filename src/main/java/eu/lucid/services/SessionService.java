@@ -7,8 +7,6 @@ import org.springframework.stereotype.Service;
 
 import eu.lucid.domain.Speciality;
 import eu.lucid.rest.StaffDTO;
-import eu.lucid.rest.request.LoginDTO;
-import eu.lucid.services.LoginService;
 
 @Service
 public class SessionService {
@@ -24,8 +22,8 @@ public class SessionService {
 		return (StaffDTO) httpSession.getAttribute("user");
 	}
 
-	public void addOrUpdateUser(LoginDTO loginDTO, LoginService loginService) {
-		httpSession.setAttribute("user", loginService.getUser(loginDTO));
+	public void addOrUpdateUser(StaffDTO staffDTO) {
+		httpSession.setAttribute("user", staffDTO);
 	}
 
 	public void destroy() {
@@ -38,6 +36,6 @@ public class SessionService {
 
 	public boolean isUserDoctor() {
 		StaffDTO staffDTO = (StaffDTO) httpSession.getAttribute("user");
-		return staffDTO.specialityAsEnum().equals(Speciality.DOCTOR);
+		return staffDTO.getSpeciality().equals(Speciality.DOCTOR.toString());
 	}
 }

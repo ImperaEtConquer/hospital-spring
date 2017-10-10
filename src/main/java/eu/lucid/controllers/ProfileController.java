@@ -54,7 +54,7 @@ public class ProfileController {
 		}
 		if (sessionService.isUserLoggedIn()) {
 			staffService.updateProfile(staffDTO);
-			sessionService.addOrUpdateUser(staffDTO.getLoginDTO(), loginService);
+			sessionService.addOrUpdateUser(loginService.getUserByLogin(staffDTO.getLogin()));
 			return new GeneralResponseDTO<>().buildEmptyWithMessage(Status.OK, message.userUpdateSuccess);
 		}
 		return new GeneralResponseDTO<>().buildEmptyWithMessage(Status.ERROR, message.notLogged);

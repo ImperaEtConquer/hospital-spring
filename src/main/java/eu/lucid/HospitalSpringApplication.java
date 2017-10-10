@@ -6,10 +6,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class HospitalSpringApplication {
 
-	/*
-	    test
-	 */
-
 	public static void main(String[] args) {
 		SpringApplication.run(HospitalSpringApplication.class, args);
 	}
