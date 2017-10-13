@@ -42,4 +42,12 @@ public class PatientService {
 		}
 		return patientsDTOlist;
 	}
+
+	public void updatePatient(PatientDTO patientDTO) {
+		Patient patient = patientRepository.getOne(patientDTO.getId());
+		patient.setFirstName(patientDTO.getFirstName());
+		patient.setLastName(patientDTO.getLastName());
+		patient.setBirthDate(converterService.stringToDate(patientDTO.getBirthDate()));
+		patientRepository.save(patient);
+	}
 }

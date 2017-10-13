@@ -50,10 +50,13 @@ public class ProfileController {
 
 	@RequestMapping(value = { "/profile" }, method = RequestMethod.PUT)
 	public GeneralResponseDTO<?> updateProfile(@RequestBody ProfileDTO profileDTO, BindingResult bindingResult) {
-		if (bindingResult.hasErrors()) {
-			return bindingService.getErrorResponse(bindingResult);
-		}
 		if (sessionService.isUserLoggedIn()) {
+			if (bindingResult.hasErrors()) {
+				return bindingService.getErrorResponse(bindingResult);
+			}
+			if (staffService.findOne(profileDTO.getStaffId()) == null) {
+				return new GeneralResponseDTO<>().buildEmptyWithMessage(Status.ERROR, "not found");
+			}
 			staffService.updateProfile(profileDTO);
 			StaffDTO staffDTO = loginService.getUserByLogin(sessionService.getUser().getLogin());
 			sessionService.addOrUpdateUser(staffDTO);

@@ -6,6 +6,9 @@ public class ProfileDTO {
 	private String lastName;
 	private String birthDate;
 	private String speciality;
+	
+	public ProfileDTO() {
+	}
 
 	public Long getStaffId() {
 		return staffId;

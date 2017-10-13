@@ -41,7 +41,11 @@ public class PatientController {
 	public GeneralResponseDTO<?> registerNewPatient(@Valid @RequestBody PatientDTO patientDTO,
 			BindingResult bindingResult) {
 		if (sessionService.isUserLoggedIn()) {
-			return null;
+			if (bindingResult.hasErrors()) {
+				return new GeneralResponseDTO<>().buildEmptyWithMessage(Status.ERROR, "incorrect input");
+			}
+			patientService.registerPatient(patientDTO);
+			return new GeneralResponseDTO<>().buildEmptyWithMessage(Status.OK, "new patient registered");
 		}
 		return new GeneralResponseDTO<>().buildEmptyWithMessage(Status.ERROR, "not logged");
 	}
@@ -49,7 +53,14 @@ public class PatientController {
 	@RequestMapping(value = { "/patients" }, method = RequestMethod.PUT)
 	public GeneralResponseDTO<?> updatePatient(@Valid @RequestBody PatientDTO patientDTO, BindingResult bindingResult) {
 		if (sessionService.isUserLoggedIn()) {
-			return null;
+			if (bindingResult.hasErrors()) {
+				return new GeneralResponseDTO<>().buildEmptyWithMessage(Status.ERROR, "incorrect input");
+			}
+			if (patientService.findOne(patientDTO.getId()) == null) {
+				return new GeneralResponseDTO<>().buildEmptyWithMessage(Status.ERROR, "not found");
+			}
+			patientService.updatePatient(patientDTO);
+			return new GeneralResponseDTO<>().buildEmptyWithMessage(Status.OK, "patient has been changed");
 		}
 		return new GeneralResponseDTO<>().buildEmptyWithMessage(Status.ERROR, "not logged");
 	}

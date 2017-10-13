@@ -58,6 +58,9 @@ public class ConverterService {
 	}
 	
 	public ProfileDTO convertStaffToProfileDTO (Staff staff) {
+		if (staff == null) {
+			return null;
+		}
 		ProfileDTO profileDTO = new ProfileDTO.Builder()
 				.staffId(staff.getId())
 				.firstName(staff.getFirstName())
